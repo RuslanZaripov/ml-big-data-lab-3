@@ -1,9 +1,25 @@
 services:
+    decrypt:
+        image: python:3.9-slim
+        container_name: decrypt_env
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: bash -c "
+            pip install ansible-vault
+            && chmod -x vault-pass.txt
+            && ansible-vault decrypt secrets.env --vault-password-file vault-pass.txt --output .env"
     web:
         build: .
+        container_name: web
         depends_on:
             redis:
                 condition: service_healthy
+            decrypt:
+                condition: service_completed_successfully
+        volumes:
+            - .:/app
+        working_dir: /app
         command: bash -c "
             python src/preprocess.py 
             && python src/train.py 
@@ -21,16 +37,23 @@ services:
                     --data-binary @tests/test_0.json"
         ports:
             - 8000:8000
-        image: zarus03/ml-big-data-lab-2:latest
+        image: zarus03/ml-big-data-lab-3:latest
     redis:
         image: redis:latest
-        command: bash -c "redis-server --requirepass $$REDIS_PASSWORD"
+        container_name: redis
+        depends_on:
+            decrypt:
+                condition: service_completed_successfully
+        volumes:
+            - .:/app
+        working_dir: /app
+        command: bash -c "
+            source .env
+            && redis-server --requirepass $$REDIS_PASSWORD"
         ports:
             - 6379:6379
-        env_file:
-            - .env
         healthcheck:
-            test: ["CMD", "redis-cli", "-a", "$$REDIS_PASSWORD", "ping"]
+            test: ["CMD", "bash", "-c", "source .env && redis-cli -a $$REDIS_PASSWORD ping"]
             interval: 1s
             timeout: 2s
             retries: 10
