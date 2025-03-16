@@ -7,6 +7,7 @@ services:
         working_dir: /app
         command: bash -c "
             pip install ansible-vault
+            && chmod -x vault-pass.txt
             && ansible-vault decrypt secrets.env --vault-password-file vault-pass.txt --output .env"
     web:
         build: .
