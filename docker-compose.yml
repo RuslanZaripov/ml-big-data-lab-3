@@ -55,6 +55,7 @@ services:
             ls -la
             && cd env && ls -la
             && export REDIS_PASSWORD=$(grep '^REDIS_PASSWORD=' .env | cut -d '=' -f2)
+            && echo $$REDIS_PASSWORD
             && redis-server --requirepass $$REDIS_PASSWORD"
         ports:
             - 6379:6379
@@ -62,6 +63,7 @@ services:
             test: ["CMD", "bash", "-c", "
                 cd /app/env 
                 && export REDIS_PASSWORD=$(grep '^REDIS_PASSWORD=' .env | cut -d '=' -f2)
+                && echo $$REDIS_PASSWORD
                 && redis-cli -a $$REDIS_PASSWORD ping"]
             interval: 1s
             timeout: 2s
