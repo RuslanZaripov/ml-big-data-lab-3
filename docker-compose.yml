@@ -3,8 +3,7 @@ services:
         image: python:3.9-slim
         container_name: decrypt_env
         volumes:
-            - vault-pass-volume:/app/vault-pass.env
-            - env-volume:/app/.env
+            - env-volume:/app/env
         working_dir: /app
         command: bash -c "
             ls -la
@@ -22,7 +21,7 @@ services:
             decrypt:
                 condition: service_completed_successfully
         volumes:
-            - env-volume:/app/.env
+            - env-volume:/app/env
         working_dir: /app
         command: bash -c "
             ls -la
@@ -50,7 +49,7 @@ services:
             decrypt:
                 condition: service_completed_successfully
         volumes:
-            - env-volume:/app/.env
+            - env-volume:/app/env
         working_dir: /app
         command: bash -c "
             ls -la
@@ -65,10 +64,4 @@ services:
             retries: 10
 
 volumes:
-  vault-pass-volume:
-    driver: local
-    driver_opts:
-      type: none
-      device: vault-pass.env
-      o: bind
   env-volume:
