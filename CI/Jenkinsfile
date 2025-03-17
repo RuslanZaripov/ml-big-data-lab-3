@@ -34,7 +34,7 @@ pipeline {
         stage('Checkout repo dir') {
             steps {
                 dir(REPO_DIR) {
-                    bat 'chcp 65001 && dir'
+                    bat 'chcp 65001 && dir && dir env'
                 }
             }
         }
