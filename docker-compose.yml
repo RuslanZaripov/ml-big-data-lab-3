@@ -3,7 +3,7 @@ services:
         image: python:3.9-slim
         container_name: decrypt_env
         volumes:
-            - env-volume:/app/env
+            - ./env:/app/env
         working_dir: /app
         command: bash -c "
             ls -la
@@ -23,7 +23,7 @@ services:
             decrypt:
                 condition: service_completed_successfully
         volumes:
-            - env-volume:/app/env
+            - ./env:/app/env
         command: bash -c "
             ls -la
             && ls -la env
@@ -51,7 +51,7 @@ services:
             decrypt:
                 condition: service_completed_successfully
         volumes:
-            - env-volume:/app/env
+            - ./env:/app/env
         working_dir: /app
         command: bash -c "
             ls -la
@@ -66,6 +66,3 @@ services:
             interval: 1s
             timeout: 2s
             retries: 10
-
-volumes:
-  env-volume:
