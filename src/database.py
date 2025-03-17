@@ -16,7 +16,7 @@ class RedisClient:
         logger = Logger(SHOW_LOG)
         self.log = logger.get_logger(__name__)
 
-        load_dotenv(override=True)
+        load_dotenv(dotenv_path='env/.env', override=True)
 
         self.client = Redis(
             host=os.getenv('REDIS_HOST'),
