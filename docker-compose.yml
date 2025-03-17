@@ -55,6 +55,8 @@ services:
         working_dir: /app
         command: bash -c "
             ls -la
+            && cd env
+            && ls -la
             && source .env
             && redis-server --requirepass $$REDIS_PASSWORD"
         ports:
