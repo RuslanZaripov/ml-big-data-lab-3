@@ -64,7 +64,7 @@ pipeline {
                 dir(REPO_DIR) {
                     bat '''
                         docker-compose up -d
-                        for /f %%i in ('docker ps -qf "name=^%CONTAINER_NAME%-web-1"') do set containerId=%%i
+                        for /f %%i in ('docker ps -qf "name=^web$"') do set containerId=%%i
                         echo %containerId%
                         IF "%containerId%" == "" (
                             echo "No container running"
