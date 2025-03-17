@@ -62,7 +62,7 @@ services:
         ports:
             - 6379:6379
         healthcheck:
-            test: ["CMD", "bash", "-c", "source .env && redis-cli -a $$REDIS_PASSWORD ping"]
+            test: ["CMD", "bash", "-c", "cd /app/env && source .env && redis-cli -a $$REDIS_PASSWORD ping"]
             interval: 1s
             timeout: 2s
             retries: 10
