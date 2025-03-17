@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Use .env File') {
+        stage('Copy vault-pass.env File') {
             steps {
                 withCredentials([file(credentialsId: 'vault-pass', variable: 'VAULT_PASS')]) {
                     bat 'xcopy /F %VAULT_PASS% %REPO_DIR%'
@@ -34,7 +34,7 @@ pipeline {
         stage('Checkout repo dir') {
             steps {
                 dir(REPO_DIR) {
-                    bat 'chcp 65001 && dir && type .env'
+                    bat 'chcp 65001 && dir'
                 }
             }
         }
