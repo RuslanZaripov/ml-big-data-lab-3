@@ -7,6 +7,8 @@ services:
         working_dir: /app
         command: bash -c "
             ls -la
+            && cd env
+            && ls -la
             && source vault-pass.env
             && pip install ansible-vault
             && echo $$VAULT_PASSWORD > vault-pass.txt
@@ -22,9 +24,9 @@ services:
                 condition: service_completed_successfully
         volumes:
             - env-volume:/app/env
-        working_dir: /app
         command: bash -c "
             ls -la
+            && ls -la env
             && python src/preprocess.py 
             && python src/train.py 
             && python src/predict.py -m LOG_REG -t func
