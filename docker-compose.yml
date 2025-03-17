@@ -7,8 +7,7 @@ services:
         working_dir: /app
         command: bash -c "
             ls -la
-            && cd env
-            && ls -la
+            && cd env && ls -la
             && source vault-pass.env
             && pip install ansible-vault
             && echo $$VAULT_PASSWORD > vault-pass.txt
@@ -26,7 +25,6 @@ services:
             - ./env:/app/env
         command: bash -c "
             ls -la
-            && ls -la env
             && python src/preprocess.py 
             && python src/train.py 
             && python src/predict.py -m LOG_REG -t func
@@ -55,8 +53,7 @@ services:
         working_dir: /app
         command: bash -c "
             ls -la
-            && cd env
-            && ls -la
+            && cd env && ls -la
             && source .env
             && redis-server --requirepass $$REDIS_PASSWORD"
         ports:
