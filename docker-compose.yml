@@ -22,7 +22,7 @@ services:
             decrypt:
                 condition: service_completed_successfully
         volumes:
-            - ./env:/app/env
+            - ./env:/app/env:ro
         command: bash -c "
             ls -la
             && coverage run -a src/unit_tests/test_database.py
@@ -44,7 +44,7 @@ services:
             decrypt:
                 condition: service_completed_successfully
         volumes:
-            - ./env:/app/env
+            - ./env:/app/env:ro
         working_dir: /app/env
         environment:
             - REDIS_PASSWORD=${REDIS_PASSWORD}
