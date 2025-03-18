@@ -49,8 +49,7 @@ services:
         command: bash -c "
             ls -la
             && source .env
-            && echo REDIS_PASSWORD='$REDIS_PASSWORD'
-            && echo Length ${#REDIS_PASSWORD}
+            && echo REDIS_PASSWORD='$$REDIS_PASSWORD'
             && redis-server --requirepass $$REDIS_PASSWORD"
         ports:
             - 6379:6379
@@ -58,8 +57,7 @@ services:
             test: ["CMD", "bash", "-c", "
                 cd /app/env
                 && source .env 
-                && echo REDIS_PASSWORD='$REDIS_PASSWORD'
-                && echo Length: ${#REDIS_PASSWORD}
+                && echo REDIS_PASSWORD='$$REDIS_PASSWORD'
                 && redis-cli -a $$REDIS_PASSWORD ping"]
             interval: 1s
             timeout: 2s
