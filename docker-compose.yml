@@ -4,15 +4,16 @@ services:
         container_name: decrypt_env
         volumes:
             - ./env:/app/env
-        working_dir: /app
+        working_dir: /app/env
         command: bash -c "
             ls -la
-            && cd env && ls -la
-            && source vault-pass.env
+            && cat vault-pass.env
             && pip install ansible-vault
             && echo $$VAULT_PASSWORD > vault-pass.txt
             && ansible-vault decrypt secrets.env --vault-password-file vault-pass.txt --output .env
-            && rm -rf vault-pass.txt"
+            && rm -rf vault-pass.txt
+            && chmod 644 .env
+            && chown 1000:1000 .env"
     web:
         build: .
         container_name: web
